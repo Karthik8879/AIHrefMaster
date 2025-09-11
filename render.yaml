@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: aihref-backend
+    env: java
+    plan: free
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: MONGODB_URI
+        fromDatabase:
+          name: aihref-mongodb
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: aihref-redis
+          property: connectionString
+      - key: LIGHTHOUSE_API_KEY
+        sync: false
+      - key: SAFE_BROWSING_API_KEY
+        sync: false
+
+  - type: web
+    name: aihref-frontend
+    env: static
+    plan: free
+    buildCommand: npm ci && npm run build
+    staticPublishPath: .next
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://aihref-backend.onrender.com/api/v1
+
+databases:
+  - name: aihref-mongodb
+    plan: free
+
+  - name: aihref-redis
+    type: redis
+    plan: free
