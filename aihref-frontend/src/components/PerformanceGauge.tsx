@@ -3,10 +3,11 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 
 interface WebVitals {
-  performance: number
-  accessibility: number
-  bestPractices: number
-  seo: number
+  lcp: number
+  fid: number
+  cls: number
+  score: number
+  screenshotB64: string | null
 }
 
 interface PerformanceGaugeProps {
@@ -15,10 +16,10 @@ interface PerformanceGaugeProps {
 
 export function PerformanceGauge({ data }: PerformanceGaugeProps) {
   const chartData = [
-    { name: 'Performance', value: data.performance, color: '#3B82F6' },
-    { name: 'Accessibility', value: data.accessibility, color: '#10B981' },
-    { name: 'Best Practices', value: data.bestPractices, color: '#F59E0B' },
-    { name: 'SEO', value: data.seo, color: '#EF4444' },
+    { name: 'LCP', value: data.lcp, color: '#3B82F6' },
+    { name: 'FID', value: data.fid, color: '#10B981' },
+    { name: 'CLS', value: data.cls, color: '#F59E0B' },
+    { name: 'Score', value: data.score, color: '#EF4444' },
   ]
 
   const getScoreColor = (score: number) => {

@@ -6,10 +6,22 @@ interface ThreatData {
 }
 
 interface SecurityStatusProps {
-  data: ThreatData
+  data: ThreatData | null
 }
 
 export function SecurityStatus({ data }: SecurityStatusProps) {
+  if (!data) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          Security Status
+        </h3>
+        <div className="text-center text-gray-500 dark:text-gray-400">
+          <p>Security data not available</p>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -25,8 +37,8 @@ export function SecurityStatus({ data }: SecurityStatusProps) {
           )}
           <div>
             <p className={`text-lg font-medium ${data.isSafe
-                ? 'text-green-600 dark:text-green-400'
-                : 'text-red-600 dark:text-red-400'
+              ? 'text-green-600 dark:text-green-400'
+              : 'text-red-600 dark:text-red-400'
               }`}>
               {data.isSafe ? 'Safe to Visit' : 'Security Issues Detected'}
             </p>

@@ -25,7 +25,7 @@ export default function Home() {
 
       if (response.ok) {
         const data = await response.json()
-        router.push(`/dashboard/${data.id}`)
+        router.push(`/dashboard/${data.lookupId}`)
       } else {
         console.error('Analysis failed')
       }

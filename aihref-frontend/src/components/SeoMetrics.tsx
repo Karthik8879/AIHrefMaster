@@ -1,7 +1,10 @@
 interface SeoData {
-  score: number
-  issues: string[]
-  recommendations: string[]
+  title: string
+  description: string
+  h1: string
+  wordCount: number
+  readability: number
+  canonical: boolean
 }
 
 interface SeoMetricsProps {
@@ -9,15 +12,15 @@ interface SeoMetricsProps {
 }
 
 export function SeoMetrics({ data }: SeoMetricsProps) {
-  const getScoreColor = (score: number) => {
-    if (score >= 90) return 'text-green-600 dark:text-green-400'
-    if (score >= 70) return 'text-yellow-600 dark:text-yellow-400'
+  const getReadabilityColor = (score: number) => {
+    if (score >= 80) return 'text-green-600 dark:text-green-400'
+    if (score >= 60) return 'text-yellow-600 dark:text-yellow-400'
     return 'text-red-600 dark:text-red-400'
   }
 
-  const getScoreBgColor = (score: number) => {
-    if (score >= 90) return 'bg-green-100 dark:bg-green-900'
-    if (score >= 70) return 'bg-yellow-100 dark:bg-yellow-900'
+  const getReadabilityBgColor = (score: number) => {
+    if (score >= 80) return 'bg-green-100 dark:bg-green-900'
+    if (score >= 60) return 'bg-yellow-100 dark:bg-yellow-900'
     return 'bg-red-100 dark:bg-red-900'
   }
 
@@ -27,66 +30,70 @@ export function SeoMetrics({ data }: SeoMetricsProps) {
         SEO Analysis
       </h3>
 
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            SEO Score
-          </span>
-          <span className={`text-2xl font-bold ${getScoreColor(data.score)}`}>
-            {data.score}
-          </span>
-        </div>
-        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-          <div
-            className={`h-2 rounded-full ${getScoreBgColor(data.score)}`}
-            style={{ width: `${data.score}%` }}
-          />
-        </div>
-      </div>
-
       <div className="space-y-4">
         <div>
           <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Issues Found ({data.issues.length})
+            Page Title
           </h4>
-          <div className="space-y-1">
-            {data.issues.slice(0, 3).map((issue, index) => (
-              <div
-                key={index}
-                className="text-sm text-red-600 dark:text-red-400 flex items-start"
-              >
-                <span className="mr-2">•</span>
-                <span>{issue}</span>
-              </div>
-            ))}
-            {data.issues.length > 3 && (
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                +{data.issues.length - 3} more issues
-              </div>
-            )}
+          <p className="text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 p-2 rounded">
+            {data.title || 'No title found'}
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Meta Description
+          </h4>
+          <p className="text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 p-2 rounded">
+            {data.description || 'No description found'}
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            H1 Tag
+          </h4>
+          <p className="text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 p-2 rounded">
+            {data.h1 || 'No H1 found'}
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Word Count
+          </h4>
+          <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm rounded-full">
+            {data.wordCount} words
+          </span>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Readability Score
+          </h4>
+          <div className="flex items-center justify-between mb-2">
+            <span className={`text-lg font-bold ${getReadabilityColor(data.readability)}`}>
+              {data.readability.toFixed(1)}
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div
+              className={`h-2 rounded-full ${getReadabilityBgColor(data.readability)}`}
+              style={{ width: `${Math.min(data.readability, 100)}%` }}
+            />
           </div>
         </div>
 
         <div>
           <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Recommendations
+            Canonical URL
           </h4>
-          <div className="space-y-1">
-            {data.recommendations.slice(0, 3).map((rec, index) => (
-              <div
-                key={index}
-                className="text-sm text-green-600 dark:text-green-400 flex items-start"
-              >
-                <span className="mr-2">•</span>
-                <span>{rec}</span>
-              </div>
-            ))}
-            {data.recommendations.length > 3 && (
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                +{data.recommendations.length - 3} more recommendations
-              </div>
-            )}
-          </div>
+          <span className={`inline-block px-3 py-1 text-sm rounded-full ${data.canonical
+              ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
+              : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
+            }`}>
+            {data.canonical ? 'Present' : 'Missing'}
+          </span>
         </div>
       </div>
     </div>

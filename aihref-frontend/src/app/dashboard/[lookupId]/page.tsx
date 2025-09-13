@@ -18,37 +18,45 @@ interface LookupData {
   requestedAt: string
   expiresAt: string
   traffic: {
-    monthlyVisits: number
-    bounceRate: number
-    avgVisitDuration: number
-    pagesPerVisit: number
+    visits: number
+    rank: number
+    bounce: number
+    avgDuration: number
+    countries: Array<{ country: string, share: number, visits: number }>
+    devices: Array<{ device: string, share: number }>
+    referrers: Array<{ site: string, share: number }>
+    searchShare: number
+    socialShare: number
   }
   webVitals: {
-    performance: number
-    accessibility: number
-    bestPractices: number
-    seo: number
+    lcp: number
+    fid: number
+    cls: number
+    score: number
+    screenshotB64: string | null
   }
   seo: {
-    score: number
-    issues: string[]
-    recommendations: string[]
+    title: string
+    description: string
+    h1: string
+    wordCount: number
+    readability: number
+    canonical: boolean
   }
   tech: {
-    cms: string
-    server: string
-    analytics: string[]
-    frameworks: string[]
-  }
+    ipv6: boolean
+    http2: boolean
+    sslDaysLeft: number
+    securityGrade: string
+  } | null
   live: {
-    isOnline: boolean
-    responseTime: number
-    uptime: number
+    trafficIndex: number
+    lastUpdated: string
   }
   threat: {
     isSafe: boolean
     threats: string[]
-  }
+  } | null
 }
 
 export default function DashboardPage() {
@@ -177,25 +185,25 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <MetricCard
             title="Monthly Visits"
-            value={data.traffic.monthlyVisits.toLocaleString()}
+            value={data.traffic?.visits?.toLocaleString() || '0'}
             icon={<BarChart3 className="h-5 w-5" />}
             trend="+12%"
           />
           <MetricCard
             title="Bounce Rate"
-            value={`${data.traffic.bounceRate}%`}
+            value={`${data.traffic?.bounce || 0}%`}
             icon={<Globe className="h-5 w-5" />}
             trend="-5%"
           />
           <MetricCard
             title="Avg. Visit Duration"
-            value={`${Math.round(data.traffic.avgVisitDuration / 60)}m`}
+            value={`${Math.round((data.traffic?.avgDuration || 0) / 60)}m`}
             icon={<BarChart3 className="h-5 w-5" />}
             trend="+8%"
           />
           <MetricCard
-            title="Pages per Visit"
-            value={data.traffic.pagesPerVisit.toFixed(1)}
+            title="Global Rank"
+            value={data.traffic?.rank?.toLocaleString() || 'N/A'}
             icon={<BarChart3 className="h-5 w-5" />}
             trend="+3%"
           />

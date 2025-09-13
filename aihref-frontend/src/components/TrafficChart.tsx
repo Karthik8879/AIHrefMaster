@@ -3,10 +3,15 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
 interface TrafficData {
-  monthlyVisits: number
-  bounceRate: number
-  avgVisitDuration: number
-  pagesPerVisit: number
+  visits: number
+  rank: number
+  bounce: number
+  avgDuration: number
+  countries: Array<{ country: string, share: number, visits: number }>
+  devices: Array<{ device: string, share: number }>
+  referrers: Array<{ site: string, share: number }>
+  searchShare: number
+  socialShare: number
 }
 
 interface TrafficChartProps {
@@ -15,10 +20,11 @@ interface TrafficChartProps {
 
 export function TrafficChart({ data }: TrafficChartProps) {
   const chartData = [
-    { name: 'Visits', value: data.monthlyVisits },
-    { name: 'Bounce Rate', value: data.bounceRate },
-    { name: 'Duration (min)', value: Math.round(data.avgVisitDuration / 60) },
-    { name: 'Pages/Visit', value: data.pagesPerVisit },
+    { name: 'Visits', value: data.visits },
+    { name: 'Bounce Rate', value: data.bounce },
+    { name: 'Duration (min)', value: Math.round(data.avgDuration / 60) },
+    { name: 'Search Share', value: data.searchShare },
+    { name: 'Social Share', value: data.socialShare },
   ]
 
   return (
