@@ -1,31 +1,32 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import { ThemeProvider } from '@/components/theme-provider'
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AIHref - Website Analytics Platform',
-  description: 'Get comprehensive insights about website traffic, performance, SEO, and technology stack - completely free.',
-  keywords: 'website analytics, traffic analysis, SEO tools, performance monitoring, web vitals',
-  authors: [{ name: 'AIHref Team' }],
-  openGraph: {
-    title: 'AIHref - Website Analytics Platform',
-    description: 'Get comprehensive insights about website traffic, performance, SEO, and technology stack - completely free.',
-    type: 'website',
-  },
-};
+  title: 'AIHref - Website Analytics Dashboard',
+  description: 'Zero-cost SimilarWeb clone for comprehensive website analytics',
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`}>
-        {children}
+      <body className={inter.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }

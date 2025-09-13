@@ -25,7 +25,7 @@ public class RdapService {
     @Value("${external.apis.rdap.base-url}")
     private String baseUrl;
     
-    @Cacheable(value = "rdap", key = "#host")
+    @Cacheable(value = "rdap", key = "#url")
     public Mono<LookupDocument.TechData> getTechData(String url) {
         try {
             String host = new URL(url).getHost();

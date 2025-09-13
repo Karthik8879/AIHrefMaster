@@ -23,7 +23,7 @@ public class CloudflareRadarService {
     @Value("${external.apis.cloudflare.base-url}")
     private String baseUrl;
     
-    @Cacheable(value = "cloudflare", key = "#host")
+    @Cacheable(value = "cloudflare", key = "#url")
     public Mono<LookupDocument.LiveData> getLiveData(String url) {
         try {
             String host = new URL(url).getHost();

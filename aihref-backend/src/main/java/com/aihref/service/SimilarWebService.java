@@ -23,7 +23,7 @@ public class SimilarWebService {
     @Value("${external.apis.similarweb.base-url}")
     private String baseUrl;
     
-    @Cacheable(value = "similarweb", key = "#host")
+    @Cacheable(value = "similarweb", key = "#url")
     public Mono<LookupDocument.TrafficData> getTrafficData(String url) {
         try {
             String host = new URL(url).getHost();
